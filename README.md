@@ -4,6 +4,7 @@ An ultra-premium, interactive single-page portfolio application for **AMANO Inte
 
 ## 🚀 Live Demo
 Deploy your own version instantly on Vercel or Netlify.
+https://amanointeriors.vercel.app
 
 ---
 
@@ -57,3 +58,11 @@ Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
    npm run build
    ```
    The compiled static files will be placed inside the `dist/` directory, ready to be served.
+
+## 👤 Author
+**Mohammed Shoaib**  
+📧 [shoaibpasha.dev@gmail.com](mailto:shoaibpasha.dev@gmail.com)  
+
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/stackpasha)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/shoaibpasha)
+</div>
