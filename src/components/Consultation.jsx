@@ -20,14 +20,18 @@ function Consultation() {
     return () => clearInterval(interval);
   }, []);
 
-  // Mouse hover 3D tilt tracking
+  // State to track if user is interacting/typing in the form
+  const [isFocused, setIsFocused] = useState(false);
+
+  // Mouse hover 3D tilt tracking (reduced range to 3 degrees to prevent cursor/click offset)
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const springConfig = { damping: 22, stiffness: 180, mass: 0.45 };
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]), springConfig);
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]), springConfig);
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [3, -3]), springConfig);
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-3, 3]), springConfig);
 
   const handleMouseMove = (e) => {
+    if (isFocused) return;
     const el = cardRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
@@ -43,22 +47,49 @@ function Consultation() {
   };
 
   const handleMouseLeave = () => {
+    if (isFocused) return;
     x.set(0);
     y.set(0);
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
+    // Smoothly flatten the card to 0 rotation during typing/input selection
+    x.set(0);
+    y.set(0);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setStatus('transmitting');
 
+    // Format a premium, readable lead message
+    const message = `Hello AMANO Interiors, I would like to request a design consultation.
+
+Here are my details:
+• *Name:* ${formData.name}
+• *Phone:* ${formData.phone}
+• *Location:* ${formData.location}
+• *Project Scope:* ${formData.project}`;
+
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/918088228997?text=${encodedMessage}`;
+
     setTimeout(() => {
       setStatus('success');
+      // Open the WhatsApp chat in a new tab
+      window.open(whatsappUrl, '_blank');
+      // Clear form inputs
       setFormData({ name: '', phone: '', location: '', project: 'Modular Kitchen' });
     }, 1200);
   };
 
   return (
-    <section id="consultation" style={{ backgroundColor: '#090909', padding: '160px 80px', color: '#ffffff', position: 'relative', overflow: 'hidden' }} className="perspective-container">
+    <section id="consultation" className="perspective-container consultation-wrap-responsive">
 
       {/* 3D background abstract golden glow */}
       <div
@@ -86,7 +117,7 @@ function Consultation() {
         }}
       />
 
-      <div style={{ maxWidth: '1440px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '80px', alignItems: 'center', position: 'relative', zIndex: 2 }} className="philosophy-grid">
+      <div className="consultation-grid-mockup" style={{ maxWidth: '1440px', margin: '0 auto' }}>
 
         {/* Left Side Details */}
         <motion.div
@@ -100,7 +131,7 @@ function Consultation() {
             <span className="text-gold" style={{ fontSize: '11px', fontWeight: '700', letterSpacing: '0.25em', textTransform: 'uppercase', display: 'block', marginBottom: '24px' }}>
               RESERVE A CONSULTATION
             </span>
-            <h2 style={{ fontSize: '56px', color: '#ffffff', lineHeight: '1.05', marginBottom: '24px', letterSpacing: '-0.02em' }}>
+            <h2 style={{ fontSize: 'clamp(32px, 5vw, 56px)', color: '#ffffff', lineHeight: '1.05', marginBottom: '24px', letterSpacing: '-0.02em' }}>
               Bring Your <br />Vision To Life.
             </h2>
             <p style={{ fontSize: '18px', color: 'rgba(255,255,255,0.65)', maxWidth: '440px', fontFamily: "'Hanken Grotesk', sans-serif" }}>
@@ -157,17 +188,8 @@ function Consultation() {
           whileInView={{ opacity: 1, scale: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="card-3d card-3d-shine"
+          className="card-3d card-3d-shine consultation-card-responsive"
           style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.03)',
-            backdropFilter: 'blur(30px)',
-            WebkitBackdropFilter: 'blur(30px)',
-            color: '#ffffff',
-            padding: '50px 60px',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-            boxShadow: '0 30px 60px rgba(0, 0, 0, 0.4)',
-            borderRadius: '0',
-            zIndex: 5,
             rotateX,
             rotateY,
             transformStyle: 'preserve-3d'
@@ -185,12 +207,14 @@ function Consultation() {
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 style={{ color: '#ffffff', borderBottom: '1px solid rgba(255, 255, 255, 0.15)' }}
                 id="form-name"
+                onFocus={handleFocus}
+                onBlur={handleBlur}
               />
               <label className="form-label" style={{ color: 'rgba(255,255,255,0.6)' }} htmlFor="form-name">Full Name</label>
               <div className="form-control-focus-bar"></div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px' }} className="philosophy-card-list translate-z-3d">
+            <div className="philosophy-card-list translate-z-3d">
               <div className="form-input-group" style={{ display: 'flex', flexDirection: 'column-reverse' }}>
                 <input
                   className="form-control"
@@ -201,6 +225,8 @@ function Consultation() {
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   style={{ color: '#ffffff', borderBottom: '1px solid rgba(255, 255, 255, 0.15)' }}
                   id="form-phone"
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
                 />
                 <label className="form-label" style={{ color: 'rgba(255,255,255,0.6)' }} htmlFor="form-phone">Phone Number</label>
                 <div className="form-control-focus-bar"></div>
@@ -215,6 +241,8 @@ function Consultation() {
                   onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                   style={{ color: '#ffffff', borderBottom: '1px solid rgba(255, 255, 255, 0.15)' }}
                   id="form-location"
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
                 />
                 <label className="form-label" style={{ color: 'rgba(255,255,255,0.6)' }} htmlFor="form-location">Location</label>
                 <div className="form-control-focus-bar"></div>
@@ -228,6 +256,8 @@ function Consultation() {
                 onChange={(e) => setFormData({ ...formData, project: e.target.value })}
                 style={{ color: '#ffffff', borderBottom: '1px solid rgba(255, 255, 255, 0.15)' }}
                 id="form-project"
+                onFocus={handleFocus}
+                onBlur={handleBlur}
               >
                 <option style={{ background: '#111' }}>Modular Kitchen</option>
                 <option style={{ background: '#111' }}>Complete Home Interior</option>
@@ -272,7 +302,7 @@ function Consultation() {
               animate={{ opacity: 1, y: 0 }}
               style={{ marginTop: '24px', textAlign: 'center', color: 'var(--gold)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '13px', lineHeight: '1.4' }}
             >
-              Bespoke Booking Registered. Alexander Vance's Office Will Contact You Shortly.
+              Your Booking Registered. Amaan's Office Will Contact You Shortly.
             </motion.div>
           )}
         </motion.div>

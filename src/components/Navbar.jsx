@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MessageCircle, ShoppingBag, User, ChevronDown } from 'lucide-react'
+import { MessageCircle, ShoppingBag, User, ChevronDown, Menu, X } from 'lucide-react'
 
 function Navbar() {
   const [activeSection, setActiveSection] = useState('portfolio');
   const [scrolled, setScrolled] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // Scroll spy and header shrink handler
   useEffect(() => {
@@ -57,7 +58,9 @@ function Navbar() {
           display: 'block',
           width: scrolled ? '120px' : '140px',
           height: 'auto',
-          transition: 'all 0.5s cubic-bezier(0.25, 1, 0.2, 1)'
+          transition: 'all 0.5s cubic-bezier(0.25, 1, 0.2, 1)',
+          position: 'relative',
+          zIndex: 160
         }}
       >
         <img
@@ -67,8 +70,8 @@ function Navbar() {
         />
       </a>
 
-      {/* Center navigation links */}
-      <div style={{ display: 'flex', gap: '40px', alignItems: 'center' }}>
+      {/* Center navigation links (Desktop) */}
+      <div className="navbar-desktop-links">
         {navLinks.map((link) => {
           const isActive = activeSection === link.id;
           return (
@@ -80,7 +83,7 @@ function Navbar() {
             >
               <a
                 href={`#${link.id}`}
-                className={`nav-link-mockup ${isActive ? 'active-section' : ''}`}
+                className="nav-link-mockup"
                 onClick={(e) => handleLinkClick(e, link.id)}
                 style={{ color: isActive ? '#ffffff' : 'rgba(255,255,255,0.65)' }}
               >
@@ -175,7 +178,7 @@ function Navbar() {
         })}
       </div>
 
-      {/* Right side widgets matching mockup */}
+      {/* Right side widgets matching mockup (Desktop) */}
       <div className="navbar-right-widgets">
         {/* Connect Now WhatsApp */}
         <a
@@ -212,6 +215,64 @@ function Navbar() {
           <ChevronDown size={10} style={{ opacity: 0.8 }} />
         </div>
       </div>
+
+      {/* Mobile Hamburger Menu Button */}
+      <button
+        className="navbar-menu-btn"
+        onClick={() => setMenuOpen(!menuOpen)}
+        aria-label="Toggle menu"
+      >
+        {menuOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
+
+      {/* Mobile Navigation Drawer */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'tween', duration: 0.3, ease: 'easeOut' }}
+            className="navbar-mobile-drawer"
+          >
+            {navLinks.map((link) => (
+              <a
+                key={link.id}
+                href={`#${link.id}`}
+                className="navbar-mobile-link"
+                onClick={(e) => {
+                  handleLinkClick(e, link.id);
+                  setMenuOpen(false);
+                }}
+              >
+                {link.label}
+              </a>
+            ))}
+
+            {/* Mobile quick action WhatsApp link */}
+            <a
+              href="https://wa.me/918088228997"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                marginTop: '24px',
+                padding: '16px 24px',
+                backgroundColor: 'var(--gold)',
+                color: 'var(--charcoal)',
+                fontWeight: '700',
+                textDecoration: 'none',
+                textAlign: 'center',
+                fontSize: '11px',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                display: 'block'
+              }}
+            >
+              Connect Now
+            </a>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }

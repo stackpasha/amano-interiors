@@ -42,16 +42,7 @@ function Hero() {
     <section 
       ref={containerRef}
       id="portfolio" 
-      style={{
-        height: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        position: 'relative',
-        padding: '0 80px',
-        overflow: 'hidden',
-        backgroundColor: '#090909'
-      }}
+      className="hero-wrap-responsive"
     >
       {/* Full screen background image of the Modular Kitchen */}
       <m.div 
@@ -84,23 +75,15 @@ function Hero() {
       {/* 3D Perspective Card Container (Floating on the left) */}
       <div 
         className="perspective-container" 
-        style={{ position: 'relative', zIndex: 10, textAlign: 'left', width: '100%', maxWidth: '540px' }}
+        style={{ position: 'relative', zIndex: 10, textAlign: 'left', width: '100%' }}
       >
         <m.div 
-          className="card-3d card-3d-shine"
+          className="card-3d card-3d-shine hero-card-responsive"
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           style={{ 
             rotateX, 
-            rotateY,
-            background: 'rgba(255, 255, 255, 0.08)', 
-            backdropFilter: 'blur(30px)', 
-            WebkitBackdropFilter: 'blur(30px)',
-            padding: '48px', 
-            border: '1px solid rgba(255, 255, 255, 0.12)', 
-            borderRadius: '24px',
-            boxShadow: '0 30px 60px rgba(0,0,0,0.45)',
-            transformStyle: 'preserve-3d'
+            rotateY
           }}
         >
           <m.h1 

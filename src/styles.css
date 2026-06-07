@@ -783,4 +783,174 @@ select.form-control {
     }
 }
 
+/* Mobile Responsive Overrides for Header, Hero & Consultation */
+.navbar-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    z-index: 150;
+    transition: transform 0.3s ease;
+}
 
+.navbar-menu-btn:hover {
+    transform: scale(1.1);
+}
+
+.navbar-desktop-links {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+
+.navbar-mobile-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 320px;
+    height: 100vh;
+    background: rgba(9, 9, 9, 0.98);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 120px 40px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    z-index: 120;
+    box-shadow: -10px 0 50px rgba(0,0,0,0.6);
+}
+
+.navbar-mobile-link {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.navbar-mobile-link:hover {
+    color: #ffffff;
+}
+
+/* Consultation Grid Responsive */
+.consultation-grid-mockup {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 80px;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.consultation-wrap-responsive {
+    background-color: #090909;
+    padding: 160px 80px;
+    color: #ffffff;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Scroll Offset margins for target sections to prevent fixed navbar overlap */
+#services, #philosophy, #journey, #consultation {
+    scroll-margin-top: 90px;
+}
+
+/* 3D Frosted Glass Consultation Form Card */
+.consultation-card-responsive {
+    background-color: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    color: #ffffff;
+    padding: 50px 60px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+    border-radius: 0;
+    z-index: 5;
+}
+
+/* Hero Wrap Responsive */
+.hero-wrap-responsive {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    padding: 0 80px;
+    overflow: hidden;
+    background-color: #090909;
+}
+
+.hero-card-responsive {
+    padding: 48px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 24px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.45);
+    transform-style: preserve-3d;
+    max-width: 540px;
+    width: 100%;
+}
+
+@media (max-width: 1024px) {
+    .navbar-container-mockup {
+        padding: 24px 40px;
+    }
+    
+    .navbar-desktop-links {
+        display: none;
+    }
+    
+    .navbar-right-widgets {
+        display: none;
+    }
+    
+    .navbar-menu-btn {
+        display: block;
+    }
+    
+    .navbar-mobile-drawer {
+        width: 100%;
+        border-left: none;
+    }
+    
+    .consultation-grid-mockup {
+        grid-template-columns: 1fr;
+        gap: 60px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar-container-mockup, .navbar-container-mockup.scrolled {
+        padding: 20px 24px;
+    }
+    
+    .hero-wrap-responsive {
+        padding: 0 20px;
+        justify-content: center;
+    }
+    
+    .hero-card-responsive {
+        padding: 32px 24px;
+    }
+    
+    .consultation-wrap-responsive {
+        padding: 80px 24px;
+    }
+    
+    .consultation-card-responsive {
+        padding: 32px 24px;
+    }
+    
+    /* Hide the sidebar panel on mobile devices to prevent layout overlap */
+    .sidebar-panel-mockup {
+        display: none;
+    }
+}
