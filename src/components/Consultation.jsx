@@ -152,7 +152,7 @@ Here are my details:
               <Phone size={18} className="text-gold" />
               <div>
                 <span style={{ display: 'block', fontSize: '10px', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Direct Line</span>
-                <span style={{ fontSize: '14px', fontWeight: '500' }}>+91 98765 43210</span>
+                <span style={{ fontSize: '14px', fontWeight: '500' }}>+91 80882 28997</span>
               </div>
             </div>
             <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
